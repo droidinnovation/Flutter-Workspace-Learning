@@ -1,6 +1,8 @@
-# first_app_test
+# The First Flutter application
 
 A new Flutter project.
+![screenshot](screenshot_imgs/Screen01.png)
+
 
 ## Getting Started
 
