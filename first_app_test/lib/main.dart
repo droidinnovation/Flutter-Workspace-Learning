@@ -198,10 +198,17 @@ class BigCard extends StatelessWidget {
           .primary, //The color scheme contains many colors, and primary is the most prominent, defining color of the app.
       child: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Text(
-          pair.asLowerCase,
-          style: textStyle,
-          semanticsLabel: "${pair.first} ${pair.second}",
+        child: Wrap(
+          children: [
+            Text(
+              pair.first,
+              style: textStyle.copyWith(fontWeight: FontWeight.w200),
+            ),
+            Text(
+              pair.second,
+              style: textStyle.copyWith(fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
       ),
     );
