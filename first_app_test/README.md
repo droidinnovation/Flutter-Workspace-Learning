@@ -3,7 +3,7 @@
 A new Flutter project.
 <!-- ![screenshot](screenshot_imgs/Screen01.png) -->
 
-<img src="screenshot_imgs/Screen01.png" width="128"/><\t>
+<img src="screenshot_imgs/Screen01.png" width="128"/>
 
 <img src="screenshot_imgs/Screen02.png" width="128"/>
 
