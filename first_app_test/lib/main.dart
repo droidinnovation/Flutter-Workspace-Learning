@@ -114,6 +114,7 @@ class GeneratorPage extends StatelessWidget {
     var appState = context.watch<MyAppState>();
     var pair = appState.current;
 
+
     IconData iconData;
     if (appState.favorites.contains(pair)) {
       iconData = Icons.favorite;
