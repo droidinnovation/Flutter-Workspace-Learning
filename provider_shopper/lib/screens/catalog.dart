@@ -36,6 +36,11 @@ class _MyAppbar extends StatelessWidget {
           onPressed: () => context.go('/catalog/cart'),
           icon: const Icon(Icons.shopping_cart),
         ),
+        //TODO
+        IconButton(
+          onPressed: () => context.go('/catalog/counter'),
+          icon: const Icon(Icons.countertops),
+        ),
       ],
     );
   }

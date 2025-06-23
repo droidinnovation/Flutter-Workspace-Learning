@@ -9,6 +9,7 @@ import 'package:provider_shopper/models/cart.dart';
 import 'package:provider_shopper/models/catalog.dart';
 import 'package:provider_shopper/screens/cart.dart';
 import 'package:provider_shopper/screens/catalog.dart';
+import 'package:provider_shopper/screens/counter_app.dart';
 import 'package:provider_shopper/screens/login.dart';
 import 'package:window_size/window_size.dart';
 
@@ -51,6 +52,10 @@ GoRouter router() {
             path: 'cart',
             builder: (context, state) => const CartScreen(),
           ),
+          GoRoute(
+            path: 'counter',
+            builder: (context, state) => const CounterScreen(),
+          ),
         ],
       ),
     ],
@@ -80,6 +85,7 @@ class MyApp extends StatelessWidget {
             return cart;
           },
         ),
+        ChangeNotifierProvider(create: (context) => Counter()),
       ],
       child: MaterialApp.router(
         title: 'Provider shopper demo app',
