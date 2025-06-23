@@ -25,14 +25,14 @@ class TodoHomePage extends StatefulWidget {
 }
 
 class _TodoHomePageState extends State<TodoHomePage> {
-  final List<String> _tasks = [];
+  final List<Task> _tasks = [];
   final TextEditingController _textController = TextEditingController();
 
   void _addTask() {
     final text = _textController.text.trim();
     if (text.isNotEmpty) {
       setState(() {
-        _tasks.add(text);
+        _tasks.add(Task(title: text));
         _textController.clear();
       });
     }
@@ -41,6 +41,12 @@ class _TodoHomePageState extends State<TodoHomePage> {
   void _removeTask(int index) {
     setState(() {
       _tasks.removeAt(index);
+    });
+  }
+
+  void _toggleTask(int index) {
+    setState(() {
+      _tasks[index].isDone = !_tasks[index].isDone;
     });
   }
 
@@ -71,15 +77,33 @@ class _TodoHomePageState extends State<TodoHomePage> {
                   ? Center(child: Text('Have no tasks yet'))
                   : ListView.builder(
                       itemCount: _tasks.length,
-                      itemBuilder: (context, index) => Card(
-                        child: ListTile(
-                          title: Text(_tasks[index]),
-                          trailing: IconButton(
-                            onPressed: () => _removeTask(index),
-                            icon: const Icon(Icons.delete, color: Colors.red),
+                      itemBuilder: (context, index) {
+                        final task = _tasks[index];
+                        return Card(
+                          child: ListTile(
+                            leading: Checkbox(
+                              value: task.isDone,
+                              onChanged: (_) => _toggleTask(index),
+                            ),
+
+                            title: Text(
+                              task.title,
+                              style: TextStyle(
+                                decoration: task.isDone
+                                    ? TextDecoration.lineThrough
+                                    : null,
+                                color: task.isDone
+                                    ? Colors.grey[800]
+                                    : Colors.black,
+                              ),
+                            ),
+                            trailing: IconButton(
+                              onPressed: () => _removeTask(index),
+                              icon: const Icon(Icons.delete, color: Colors.red),
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
             ),
           ],
@@ -87,4 +111,11 @@ class _TodoHomePageState extends State<TodoHomePage> {
       ),
     );
   }
+}
+
+class Task {
+  final String title;
+  bool isDone;
+
+  Task({required this.title, this.isDone = false});
 }
