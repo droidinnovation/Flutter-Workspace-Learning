@@ -26,13 +26,14 @@ class DocumentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // final metadataRecord = document.metadata;
     final (title, :modified) = document.metadata;
+    final formattedModifiedDate = formatDate(modified);
     final blocks = document.getBlocks();
 
     return Scaffold(
       appBar: AppBar(title: Text(title)),
       body: Column(
         children: [
-          Text('Last modified $modified'),
+          Text('Last modified $formattedModifiedDate'),
           Expanded(
             child: ListView.builder(
               itemCount: blocks.length,
@@ -54,19 +55,56 @@ class BlockWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle? textStyle;
-    switch (block.type) {
-      case 'h1':
-        textStyle = Theme.of(context).textTheme.displayMedium;
-      case 'p' || 'checkbox':
-        textStyle = Theme.of(context).textTheme.bodyMedium;
-      case _:
-        textStyle = Theme.of(context).textTheme.bodySmall;
-    }
+    // TextStyle? textStyle;
+    // textStyle = switch (block.type) {
+    //   'h1' => Theme.of(context).textTheme.displayMedium,
+    //   'p' || 'checkbox' => Theme.of(context).textTheme.bodyMedium,
+    //   _ => Theme.of(context).textTheme.bodySmall,
+    // };
+
+    // return Container(
+    //   padding: EdgeInsets.all(8.0),
+    //   child: Text(block.text, style: textStyle),
+    // );
 
     return Container(
-      padding: EdgeInsets.all(8.0),
-      child: Text(block.text, style: textStyle),
+      padding: EdgeInsets.all(8),
+      child: switch (block) {
+        HeaderBlock(:final text) => Text(
+          text,
+          style: Theme.of(context).textTheme.displayMedium,
+        ),
+        ParagraphBlock(:final text) => Text(text),
+        CheckboxBlock(:final text, :final isChecked) => Row(
+          children: [
+            Checkbox(
+              value: isChecked,
+              onChanged: (_) {
+                //print(valueChanged);
+              },
+            ),
+            Text(text),
+          ],
+        ),
+      },
     );
   }
+}
+
+String formatDate(DateTime dateTime) {
+  final today = DateTime.now();
+  final difference = dateTime.difference(today);
+
+  return switch (difference) {
+    Duration(inDays: 0) => 'today',
+    Duration(inDays: 1) => 'tomorrow',
+    Duration(inDays: -1) => 'yesterday',
+    //This code introduces guard clauses:
+    Duration(inDays: final days) when days > 7 =>
+      '${days ~/ 7} weeks from now', // Add from here
+    Duration(inDays: final days) when days < -7 =>
+      '${days.abs() ~/ 7} weeks ago',
+    Duration(inDays: final days, isNegative: true) => '${days.abs()} days ago',
+    Duration(inDays: final days) => '$days days from now',
+  };
 }
